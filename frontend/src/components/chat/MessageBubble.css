@@ -1,0 +1,57 @@
+.bubble-wrapper {
+  margin-bottom: 8px;
+  flex: 0 0 auto;
+  display: flex;
+}
+
+.bubble-wrapper.left {
+  justify-content: flex-start;
+}
+
+.bubble-wrapper.right {
+  justify-content: flex-end;
+}
+
+.bubble {
+  padding: 12px;
+  border-radius: 10px;
+  max-width: 250px;
+  word-break: break-word;
+}
+
+.bubble-me {
+  background-color: #007bff;
+  color: white;
+}
+
+.bubble-signed-error {
+	border-color: rgb(255, 24, 24);
+	border-width: 4px;
+	border-style: solid;
+}
+
+.bubble-signed {
+	border-color: aquamarine;
+	border-width: 2px;
+	border-style: solid;
+}
+
+.bubble-other {
+  background-color: #333;
+  color: white;
+}
+
+.bubble-meta {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.bubble-icon {
+  width: 16px;
+  height: 16px;
+}
