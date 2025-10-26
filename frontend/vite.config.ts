@@ -51,6 +51,16 @@ export default defineConfig({
       }
     }
   },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: 'src/_tests_/setupTests.ts',
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'lcov'],
+      reportsDirectory: 'coverage'
+    }
+  },
   /**
    * Areas para agreagar nuevos aliases segun se necesiten
    */
