@@ -45,6 +45,13 @@ jobs:
           echo "--- backend/coverage.xml (first 40 lines) ---"
           head -n 40 backend/coverage.xml || true
 
+      - name: Verify backend coverage exists
+        run: |
+          if [ ! -s backend/coverage.xml ]; then
+            echo "ERROR: backend/coverage.xml not found or empty" >&2
+            exit 1
+          fi
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
@@ -67,6 +74,12 @@ jobs:
           ls -la frontend/coverage || true
           echo "--- frontend/coverage/lcov.info (first 40 lines) ---"
           head -n 40 frontend/coverage/lcov.info || true
+
+      - name: Verify frontend coverage exists (optional)
+        run: |
+          if [ ! -s frontend/coverage/lcov.info ]; then
+            echo "WARN: frontend/coverage/lcov.info missing or empty (frontend excluded from overall coverage)" >&2
+          fi
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
