@@ -36,7 +36,7 @@ jobs:
           SESSION_SECRET_KEY: sessionsecret
           PYTHONPATH: ${{ github.workspace }}/backend
         run: |
-          python -m pytest -c backend/pytest.ini
+          python -m pytest -c backend/pytest.ini backend/tests
 
       - name: Show backend coverage file
         run: |
