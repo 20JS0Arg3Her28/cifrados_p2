@@ -30,14 +30,13 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run backend tests with coverage
-        working-directory: backend
         env:
           SECRET_KEY: testsecret
           APP_SECRET: appsecret
           SESSION_SECRET_KEY: sessionsecret
           PYTHONPATH: ${{ github.workspace }}/backend
         run: |
-          python -m pytest
+          python -m pytest -c backend/pytest.ini
 
       - name: Show backend coverage file
         run: |

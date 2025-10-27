@@ -1,0 +1,12 @@
+[run]
+# Make file paths in coverage data relative to the repo root so Sonar can resolve them
+relative_files = True
+# Explicitly set the measured source to align with Sonar's sources
+source = backend/app
+
+[paths]
+# Normalize possible absolute paths seen in CI runners to the common source root
+source =
+    backend/app
+    /home/runner/work/cifrados_p2/cifrados_p2/backend/app
+    /github/workspace/backend/app
