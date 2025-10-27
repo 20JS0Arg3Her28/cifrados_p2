@@ -55,12 +55,12 @@ jobs:
       - name: Install frontend deps
         working-directory: frontend
         run: |
-          npm install
+          npm ci
 
       - name: Run frontend tests with coverage
         working-directory: frontend
         run: |
-          npm run test --silent
+          npm run test:coverage --silent
 
       - name: Show frontend coverage
         run: |
