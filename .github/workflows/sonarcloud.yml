@@ -1,0 +1,77 @@
+name: CI + SonarCloud
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  test-and-analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install backend deps
+        working-directory: backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run backend tests with coverage
+        working-directory: backend
+        env:
+          SECRET_KEY: testsecret
+          APP_SECRET: appsecret
+          SESSION_SECRET_KEY: sessionsecret
+          PYTHONPATH: ${{ github.workspace }}/backend
+        run: |
+          python -m pytest
+
+      - name: Show backend coverage file
+        run: |
+          ls -la backend | sed -n '1,200p'
+          echo "--- backend/coverage.xml (first 40 lines) ---"
+          head -n 40 backend/coverage.xml || true
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend deps
+        working-directory: frontend
+        run: |
+          npm install
+
+      - name: Run frontend tests with coverage
+        working-directory: frontend
+        run: |
+          npm run test --silent
+
+      - name: Show frontend coverage
+        run: |
+          ls -la frontend/coverage || true
+          echo "--- frontend/coverage/lcov.info (first 40 lines) ---"
+          head -n 40 frontend/coverage/lcov.info || true
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          projectBaseDir: .
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
