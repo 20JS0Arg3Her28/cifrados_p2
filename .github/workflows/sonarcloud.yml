@@ -30,20 +30,26 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run backend tests with coverage
-        working-directory: backend
         env:
           SECRET_KEY: testsecret
           APP_SECRET: appsecret
           SESSION_SECRET_KEY: sessionsecret
           PYTHONPATH: ${{ github.workspace }}/backend
         run: |
-          python -m pytest
+          python -m pytest -c backend/pytest.ini backend/tests
 
       - name: Show backend coverage file
         run: |
           ls -la backend | sed -n '1,200p'
           echo "--- backend/coverage.xml (first 40 lines) ---"
           head -n 40 backend/coverage.xml || true
+
+      - name: Verify backend coverage exists
+        run: |
+          if [ ! -s backend/coverage.xml ]; then
+            echo "ERROR: backend/coverage.xml not found or empty" >&2
+            exit 1
+          fi
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -67,6 +73,12 @@ jobs:
           ls -la frontend/coverage || true
           echo "--- frontend/coverage/lcov.info (first 40 lines) ---"
           head -n 40 frontend/coverage/lcov.info || true
+
+      - name: Verify frontend coverage exists (optional)
+        run: |
+          if [ ! -s frontend/coverage/lcov.info ]; then
+            echo "WARN: frontend/coverage/lcov.info missing or empty (frontend excluded from overall coverage)" >&2
+          fi
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
