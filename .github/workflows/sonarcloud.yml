@@ -70,11 +70,8 @@ jobs:
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          projectBaseDir: .
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=20JS0Arg3Her28_cifrados_p2
-            -Dsonar.organization=20JS0Arg3Her28
-            -Dsonar.python.coverage.reportPaths=backend/coverage.xml
-            -Dsonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info
+          SONAR_HOST_URL: https://sonarcloud.io
