@@ -35,8 +35,15 @@ jobs:
           SECRET_KEY: testsecret
           APP_SECRET: appsecret
           SESSION_SECRET_KEY: sessionsecret
+          PYTHONPATH: ${{ github.workspace }}/backend
         run: |
           python -m pytest
+
+      - name: Show backend coverage file
+        run: |
+          ls -la backend | sed -n '1,200p'
+          echo "--- backend/coverage.xml (first 40 lines) ---"
+          head -n 40 backend/coverage.xml || true
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -48,20 +55,20 @@ jobs:
       - name: Install frontend deps
         working-directory: frontend
         run: |
-          npm ci
+          npm install
 
       - name: Run frontend tests with coverage
         working-directory: frontend
         run: |
           npm run test --silent
 
+      - name: Show frontend coverage
+        run: |
+          ls -la frontend/coverage || true
+          echo "--- frontend/coverage/lcov.info (first 40 lines) ---"
+          head -n 40 frontend/coverage/lcov.info || true
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
-            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
-            -Dsonar.python.coverage.reportPaths=backend/coverage.xml
-            -Dsonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info
