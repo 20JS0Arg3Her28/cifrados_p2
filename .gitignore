@@ -31,5 +31,5 @@ coverage.xml
 .coverage.*
 
 # Frontend coverage
-frontend/coverage/
+# frontend/coverage/
 frontend/.nyc_output/
