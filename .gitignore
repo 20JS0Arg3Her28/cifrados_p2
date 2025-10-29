@@ -23,5 +23,13 @@ frontend/.env
 backend/.env-local
 backend/.env-docker
 py_env/
-# Coverage
-frontend/coverage/Icov-report
+# Coverage - Ignore local coverage files (CI generates them with correct paths)
+.coverage
+htmlcov/
+coverage.xml
+*.coverage
+.coverage.*
+
+# Frontend coverage
+frontend/coverage/
+frontend/.nyc_output/
