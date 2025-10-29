@@ -1,0 +1,260 @@
+================================================================================
+                    TEST COVERAGE VISUALIZATION
+                    Cifrados P2 Full-Stack Project
+================================================================================
+
+BACKEND COVERAGE BREAKDOWN (94.19% Overall)
+================================================================================
+
+[████████████████████████████████████████] 94% Coverage
+Lines Covered: 292 / 310
+
+By Module:
+  middleware    [████████████████████████████████████████] 100% (logger.py)
+  utils         [████████████████████████████████████████] 100% (limiter, sanitize)
+  auth          [██████████████████████████████████████░░] 96.39%
+  main          [██████████████████████████████████████░░] 96.30%
+  crypto        [███████████████████████████████░░░░░░░░░] 90.91%
+
+Tested Files: 10/21
+  ✓ main.py                  (96.30%)
+  ✓ auth/jwt.py              (95.77%)
+  ✓ auth/totp.py             (100%)
+  ✓ auth/utils.py            (100%)
+  ✓ crypto/crypto.py         (92.22%)
+  ✓ crypto/hashing.py        (100%)
+  ✓ crypto/signing.py        (86.36%)
+  ✓ middleware/logger.py     (100%)
+  ✓ utils/limiter.py         (100%)
+  ✓ utils/sanitize.py        (100%)
+
+Untested Files: 11/21
+  ✗ auth/dependencies.py     (0%)  - Dependency injection
+  ✗ auth/google/callback.py  (0%)  - OAuth callback
+  ✗ auth/google/oauth2.py    (0%)  - OAuth setup
+  ✗ auth/google/routes.py    (0%)  - OAuth routes
+  ✗ db/db.py                 (0%)  - Database session
+  ✗ endpoints/chain.py       (0%)  - LLM endpoints
+  ✗ endpoints/chat.py        (0%)  - Chat endpoints
+  ✗ model/models.py          (0%)  - SQLAlchemy ORM
+  ✗ routers/auth.py          (0%)  - Auth router
+  ✗ schemas/schemas.py       (0%)  - Pydantic schemas
+  ✗ utils/logging_route.py   (0%)  - Route logging
+
+
+FRONTEND COVERAGE BREAKDOWN (31.13% Overall)
+================================================================================
+
+[████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 31% Coverage
+Lines Covered: 382 / 1,227
+
+By Component Type:
+
+FULLY TESTED (100% - 17 Files):
+  ✓ src/App.tsx                          (16/16 lines)
+  ✓ src/components/Header/Header.tsx     (33/33)
+  ✓ src/components/RequireAuth/          (14/14)
+  ✓ src/components/Toast/Toast.tsx       (14/14)
+  ✓ src/components/chat/MessageBubble.tsx     (18/18)
+  ✓ src/components/chat/GroupMessageBubble.   (22/22)
+  ✓ src/components/chat/MessageInput.tsx      (31/31)
+  ✓ src/components/chat/SignToggle.tsx        (16/16)
+  ✓ src/components/layout/NavBar.tsx     (22/22)
+  ✓ src/components/layout/Sidebar.tsx    (25/25)
+  ✓ src/constants/validatros.ts          (2/2)
+  ✓ src/lib/logger.ts                    (44/44)
+  ✓ src/pages/OAuthCallback/             (18/18)
+  ✓ src/routes/guards/RouteGuards.tsx    (9/9)
+  ✓ src/store/chatStore.ts               (5/5)
+  ✓ src/store/useAuth.ts                 (22/22)
+  ✓ src/store/userStore.ts               (32/32)
+
+PARTIALLY TESTED:
+  ~ src/components/SetupTOTP/SetupTOTP.tsx    (23/25) 92%
+  ~ src/lib/api.ts                           (16/40) 40%
+
+NOT TESTED (0% - 7 Files):
+  ✗ src/main.tsx                    (0/10)    - Entry point
+  ✗ src/routes/AppRoutes.tsx        (0/43)    - Route definitions
+  ✗ src/pages/Login/Login.tsx       (0/95)    - Login page
+  ✗ src/pages/SignUp/Signup.tsx     (0/115)   - Sign up page
+  ✗ src/pages/Chat/P2PChatPage.tsx  (0/84)    - P2P chat
+  ✗ src/pages/Chat/GroupChatPage.tsx(0/258)   - Group chat (largest gap)
+  ✗ src/pages/Other/RequestInterface(0/214)   - Request interface
+
+
+TESTING FRAMEWORKS COMPARISON
+================================================================================
+
+                    Backend             Frontend
+  Framework:        pytest 8.3.4        Vitest 2.1.5
+  Language:         Python 3.12         TypeScript/React
+  Coverage Tool:    coverage.py         V8
+  Report Format:    Cobertura XML       LCOV
+  Test Count:       11 files            20 files
+  CI/CD:            GitHub Actions      GitHub Actions
+  Coverage Gate:    SonarCloud          SonarCloud
+
+
+CRITICAL GAPS ANALYSIS
+================================================================================
+
+BACKEND CRITICAL GAPS (11 files, 52% of codebase untested):
+┌─────────────────────┬──────────┬─────────────────────────────────────┐
+│ Category            │ Files    │ Impact                              │
+├─────────────────────┼──────────┼─────────────────────────────────────┤
+│ API Endpoints       │ 3 files  │ No integration tests for chat/chain  │
+│ Database Layer      │ 2 files  │ No model/schema tests               │
+│ OAuth/Google Auth   │ 3 files  │ No OAuth flow validation            │
+│ Routing/Schemas     │ 2 files  │ No endpoint input validation        │
+│ Utils               │ 1 file   │ Route logging untested              │
+└─────────────────────┴──────────┴─────────────────────────────────────┘
+
+FRONTEND CRITICAL GAPS (7 files, 32% of codebase untested):
+┌─────────────────────┬──────────┬─────────────────────────────────────┐
+│ Category            │ Lines    │ Impact                              │
+├─────────────────────┼──────────┼─────────────────────────────────────┤
+│ Chat Pages (P2P/G)  │ 342      │ Core feature - 28% of untested code │
+│ Auth Pages          │ 210      │ Login/signup flows - 17% of gap     │
+│ Other Pages         │ 214      │ Request interface - 17% of gap      │
+│ Routing             │ 43       │ Route setup - 3% of gap             │
+│ Entry Point         │ 10       │ main.tsx initialization             │
+└─────────────────────┴──────────┴─────────────────────────────────────┘
+
+
+COVERAGE TREND
+================================================================================
+
+Timeline:
+  Before Recent Work:    24% (Frontend)
+  Current:               31% (Frontend)
+  Improvement:           +7 percentage points
+  Goal:                  60-70% (Frontend)
+  
+Backend has maintained strong 94%+ coverage consistently.
+
+
+TEST INVENTORY SUMMARY
+================================================================================
+
+BACKEND TESTS (11 test files):
+  1. test_main.py               - App initialization & security headers
+  2. test_jwt.py                - Token creation/decoding
+  3. test_jwt_extended.py       - Extended JWT functionality
+  4. test_totp.py               - TOTP 2FA authentication
+  5. test_crypto.py             - RSA & AES-GCM encryption
+  6. test_hashing.py            - Password hashing (bcrypt/argon2)
+  7. test_signing.py            - Message signing
+  8. test_signing_extended.py   - Extended signing tests
+  9. test_middleware.py         - Middleware functionality
+  10. test_utils_sanitize.py    - HTML sanitization & XSS protection
+  11. conftest.py               - Pytest fixtures & setup
+
+FRONTEND TESTS (20 test files):
+  - 2 store tests (userStore, chatStore, useAuth)
+  - 1 utility test (api, logger, validators)
+  - 8 component tests (Header, NavBar, Sidebar, Toast, etc.)
+  - 5 page/route tests (App, OAuthCallback, RequireAuth, etc.)
+  - 1 setup file
+
+
+GITHUB ACTIONS CI/CD PIPELINE
+================================================================================
+
+Workflow: .github/workflows/sonarcloud.yml
+
+Triggers:
+  → Push to any branch
+  → Pull requests (opened, synchronize, reopened)
+
+Steps:
+  1. Checkout code (full history for SonarCloud)
+  2. Setup Python 3.12
+  3. Install backend dependencies
+  4. Run backend tests with pytest & coverage.py
+       Output: backend/coverage.xml
+  5. Setup Node 20
+  6. Install frontend dependencies
+  7. Run frontend tests with vitest & V8
+       Output: frontend/coverage/lcov.info
+  8. Upload both reports to SonarCloud
+       Project: 20JS0Arg3Her28_cifrados_p2
+       Organization: 20js0arg3her28
+
+
+RECOMMENDATIONS PRIORITY MATRIX
+================================================================================
+
+CRITICAL (HIGH IMPACT, DO FIRST):
+  ┌────────────────────────────────────────────────────────────────┐
+  │ 1. Add tests for chat API endpoints                            │
+  │ 2. Add tests for database models & ORM                         │
+  │ 3. Test Chat pages (342 lines) - Core feature gap              │
+  └────────────────────────────────────────────────────────────────┘
+
+HIGH PRIORITY (MEDIUM-HIGH IMPACT):
+  ┌────────────────────────────────────────────────────────────────┐
+  │ 1. Add OAuth2 integration tests                                │
+  │ 2. Test Login/SignUp pages (210 lines)                         │
+  │ 3. Complete API client tests (40% → 100%)                      │
+  └────────────────────────────────────────────────────────────────┘
+
+MEDIUM PRIORITY (NICE TO HAVE):
+  ┌────────────────────────────────────────────────────────────────┐
+  │ 1. Establish minimum coverage thresholds                       │
+  │ 2. Add branch/conditional coverage tracking                    │
+  │ 3. Test Request Interface page                                 │
+  │ 4. Create testing patterns documentation                       │
+  └────────────────────────────────────────────────────────────────┘
+
+
+KEY FILES & LOCATIONS
+================================================================================
+
+Configuration Files:
+  - backend/pytest.ini                     → Backend test config
+  - backend/.coveragerc                    → Coverage.py setup
+  - frontend/vite.config.ts                → Vitest config
+  - sonar-project.properties               → SonarCloud config
+  - .github/workflows/sonarcloud.yml       → CI/CD workflow
+
+Coverage Reports:
+  - backend/coverage.xml                   → Backend coverage XML
+  - backend/htmlcov/index.html             → Backend HTML report
+  - frontend/coverage/lcov.info            → Frontend LCOV data
+  - frontend/coverage/lcov-report/         → Frontend HTML report
+
+Test Directories:
+  - backend/tests/                         → Backend test files
+  - frontend/src/_tests_/                  → Frontend test files
+
+
+================================================================================
+                        SUMMARY STATISTICS
+================================================================================
+
+Total Files:              48 files
+  Backend:                21 Python files
+  Frontend:               27 TypeScript/React files
+
+Files With Tests:         30 files (62.5%)
+  Backend:                10/21 (47.6%)
+  Frontend:               20/27 (74.1%)
+
+Overall Coverage:         ~60% combined
+  Backend:                94.19% ✓ EXCELLENT
+  Frontend:               31.13% ~ MODERATE
+
+Test Files:              31 files
+  Backend:                11 test files
+  Frontend:               20 test files
+
+Lines of Code:           ~1,537 total
+  Backend:                310 lines (20%)
+  Frontend:               1,227 lines (80%)
+
+Lines Covered:           674 lines (43.9%)
+  Backend:                292 lines (94.19%)
+  Frontend:               382 lines (31.13%)
+
+================================================================================
