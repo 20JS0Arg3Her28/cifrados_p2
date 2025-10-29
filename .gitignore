@@ -23,3 +23,5 @@ frontend/.env
 backend/.env-local
 backend/.env-docker
 py_env/
+# Coverage
+frontend/coverage/Icov-report
