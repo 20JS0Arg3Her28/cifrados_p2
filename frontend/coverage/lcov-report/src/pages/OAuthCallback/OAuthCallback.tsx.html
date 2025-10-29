@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/18</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/18</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -89,58 +89,58 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import { useEffect } from "react";</span></span></span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@store/useAuth";
 import { loadUsername } from "@store/userStore";
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default function OAuthCallback() {</span>
-<span class="cstat-no" title="statement not covered" >	const navigate = useNavigate();</span>
-<span class="cstat-no" title="statement not covered" >	const { setTokens } = useAuth();</span>
+export default function OAuthCallback() {
+	const navigate = useNavigate();
+	const { setTokens } = useAuth();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >	useEffect(() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >		const params = new URLSearchParams(window.location.search);</span>
-<span class="cstat-no" title="statement not covered" >		const accessToken = params.get("access_token");</span>
-<span class="cstat-no" title="statement not covered" >		const refreshToken = params.get("refresh_token");</span>
+	useEffect(() =&gt; {
+		const params = new URLSearchParams(window.location.search);
+		const accessToken = params.get("access_token");
+		const refreshToken = params.get("refresh_token");
 &nbsp;
-<span class="cstat-no" title="statement not covered" >		if (accessToken &amp;&amp; refreshToken) {</span>
-<span class="cstat-no" title="statement not covered" >			setTokens(accessToken, refreshToken);</span>
-<span class="cstat-no" title="statement not covered" >			loadUsername(accessToken)</span>
+		if (accessToken &amp;&amp; refreshToken) {
+			setTokens(accessToken, refreshToken);
+			loadUsername(accessToken)
 &nbsp;
-<span class="cstat-no" title="statement not covered" >			navigate("/chat");</span>
-<span class="cstat-no" title="statement not covered" >		} else {</span>
-<span class="cstat-no" title="statement not covered" >			navigate("/login"); // Redirige si faltan tokens</span>
-<span class="cstat-no" title="statement not covered" >		}</span>
-<span class="cstat-no" title="statement not covered" >	}, [navigate, setTokens]);</span>
+			navigate("/chat");
+		} else {
+			navigate("/login"); // Redirige si faltan tokens
+		}
+	}, [navigate, setTokens]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >	return &lt;p&gt;Procesando autenticación de Google...&lt;/p&gt;;</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+	return &lt;p&gt;Procesando autenticación de Google...&lt;/p&gt;;
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -148,7 +148,7 @@ import { loadUsername } from "@store/userStore";
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-26T23:23:52.588Z
+                at 2025-10-29T21:56:34.670Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
