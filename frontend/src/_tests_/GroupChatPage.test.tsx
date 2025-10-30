@@ -497,4 +497,51 @@ describe('GroupChatPage', () => {
       expect.any(Object)
     );
   });
+
+  it('should handle error when sending message fails', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+
+    vi.mocked(api.get)
+      .mockResolvedValueOnce({ data: [{ id: 'group1' }] }) // groups
+      .mockResolvedValueOnce({ data: { owner: 'test-user' } }) // owner check
+      .mockResolvedValueOnce({ data: [] }) // users
+      .mockResolvedValueOnce({ data: mockMessages }); // messages
+
+    // Mock post to fail
+    vi.mocked(api.post).mockRejectedValueOnce(new Error('Network error'));
+
+    render(
+      <BrowserRouter>
+        <GroupChatPage />
+      </BrowserRouter>
+    );
+
+    // Wait for groups to load and select the first group
+    await waitFor(() => {
+      expect(screen.getByText('group1')).toBeInTheDocument();
+    });
+
+    // Select a group
+    fireEvent.click(screen.getByText('group1'));
+
+    // Wait for the message input to appear
+    await waitFor(() => {
+      expect(screen.getByTestId('message-input')).toBeInTheDocument();
+    });
+
+    // Try to send a message
+    const input = screen.getByTestId('message-input');
+    fireEvent.keyDown(input, { key: 'Enter', currentTarget: { value: 'test message' } });
+
+    await waitFor(() => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Error sending message:',
+        expect.any(Error)
+      );
+    });
+
+    consoleErrorSpy.mockRestore();
+    consoleLogSpy.mockRestore();
+  });
 });

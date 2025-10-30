@@ -217,6 +217,7 @@ describe('Login', () => {
     });
   });
 
+
   it('should show error when login fails', async () => {
     vi.mocked(api.signin).mockRejectedValue(new Error('Invalid credentials'));
 

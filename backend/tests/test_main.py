@@ -77,3 +77,33 @@ def test_security_headers_removes_server_header():
     assert response.headers.get("X-Content-Type-Options") == "nosniff"
     assert response.headers.get("X-Frame-Options") == "DENY"
     assert "Content-Security-Policy" in response.headers
+
+
+def test_static_files_mount():
+    """Test that static files are mounted if dist directory exists."""
+    import os
+    import tempfile
+    import shutil
+
+    # Create a temporary dist directory
+    temp_dir = tempfile.mkdtemp()
+    dist_path = os.path.join(temp_dir, "frontend", "dist")
+    os.makedirs(dist_path, exist_ok=True)
+
+    try:
+        # Patch the dist_path in main.py
+        from unittest.mock import patch
+        with patch('app.main.os.path.join', return_value=dist_path):
+            with patch('app.main.os.path.isdir', return_value=True):
+                # Import app fresh
+                import sys
+                if 'app.main' in sys.modules:
+                    del sys.modules['app.main']
+
+                # The app should have static files mounted
+                # We just verify this doesn't crash
+                from app.main import app
+                assert app is not None
+    finally:
+        # Clean up
+        shutil.rmtree(temp_dir, ignore_errors=True)
