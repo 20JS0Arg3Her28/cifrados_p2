@@ -70,9 +70,9 @@ jobs:
 
       - name: Show frontend coverage
         run: |
-          ls -la frontend/coverage || true
-          echo "--- frontend/coverage/lcov.info (first 40 lines) ---"
-          head -n 40 frontend/coverage/lcov.info || true
+          ls -la frontend/ || true
+          echo "--- frontend/lcov.info (first 40 lines) ---"
+          head -n 40 frontend/lcov.info || true
 
       - name: Verify frontend coverage exists (optional)
         run: |
