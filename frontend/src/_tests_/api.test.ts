@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import API, { googleLoginUrl } from '../lib/api';
+import API, { googleLoginUrl, signup, signin } from '../lib/api';
 
 vi.mock('axios', () => {
   const mockAxios = {
@@ -44,6 +44,40 @@ describe('api', () => {
       expect(API.interceptors).toBeDefined();
       expect(API.interceptors.request).toBeDefined();
       expect(API.interceptors.response).toBeDefined();
+    });
+  });
+
+  describe('signup function', () => {
+    it('should call API.post with correct parameters', async () => {
+      const mockResponse = { data: { message: 'success' } };
+      vi.mocked(API.post).mockResolvedValueOnce(mockResponse);
+
+      await signup('test@example.com', 'password123');
+
+      expect(API.post).toHaveBeenCalledWith(
+        '/auth/signup',
+        { email: 'test@example.com', password: 'password123' },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    });
+  });
+
+  describe('signin function', () => {
+    it('should call API.post with correct parameters', async () => {
+      const mockResponse = { data: { access_token: 'token123' } };
+      vi.mocked(API.post).mockResolvedValueOnce(mockResponse);
+
+      await signin('test@example.com', 'password123', '123456');
+
+      expect(API.post).toHaveBeenCalledWith('/auth/login', {
+        email: 'test@example.com',
+        password: 'password123',
+        totp_code: '123456',
+      });
     });
   });
 });
