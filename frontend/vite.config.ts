@@ -41,9 +41,9 @@ export default defineConfig({
     proxy: {
       '/@vite': {
         target: 'http://localhost:3000',
-        configure: (proxy, options) => {
+        configure: (proxy) => {
           proxy.on('error', () => {});
-          proxy.on('proxyReq', (proxyReq, req, res) => {
+          proxy.on('proxyReq', (_proxyReq, _req, res) => {
             res.statusCode = 404;
             res.end();
           });

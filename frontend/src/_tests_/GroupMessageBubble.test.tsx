@@ -119,7 +119,7 @@ describe('GroupMessageBubble', () => {
   });
 
   it('should have correct heading styles for sender name', () => {
-    const { container } = render(<GroupMessageBubble msg={baseMessage} me={false} />);
+    render(<GroupMessageBubble msg={baseMessage} me={false} />);
     const senderHeading = screen.getByText('user1');
 
     expect(senderHeading.tagName).toBe('H4');

@@ -30,8 +30,8 @@ const loadPublicKey = async (username: string, accessToken: string | null) => {
 				Authorization: `Bearer ${accessToken}`
 			}
 		})
-		username = res.data
-		console.log('Public Key loaded:', username)
+		public_key = res.data
+		console.log('Public Key loaded:', public_key)
 	} catch (err) {
 		console.error('Error loading Public Key:', err)
 	}

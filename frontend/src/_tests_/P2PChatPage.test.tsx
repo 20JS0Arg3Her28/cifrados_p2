@@ -31,7 +31,7 @@ vi.mock('../lib/api', () => ({
 }));
 
 vi.mock('../components/layout/Sidebar', () => ({
-  default: ({ contacts, username, active, onSelect }: any) => (
+  default: ({ contacts, username, onSelect }: any) => (
     <div data-testid="sidebar">
       <div>Username: {username}</div>
       {contacts.map((contact: any) => (

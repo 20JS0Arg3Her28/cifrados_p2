@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import axios from 'axios';
 import API, { googleLoginUrl, signup, signin } from '../lib/api';
 
 // Mock localStorage
@@ -65,12 +64,6 @@ describe('api', () => {
     });
 
     it('should not add Authorization header when no token in localStorage', async () => {
-      const config = {
-        headers: {},
-        url: '/test',
-        method: 'get'
-      };
-
       expect(localStorage.getItem('access_token')).toBeNull();
     });
 

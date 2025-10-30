@@ -28,7 +28,7 @@ export default function ChatPage() {
 		if (getPublicKey().length === 0) {
 			loadPublicKey(getUsername(), me)
 		}
-	}, [])
+	}, [me])
 
 	useEffect(() => {
 		api.get('/users', {
@@ -39,7 +39,7 @@ export default function ChatPage() {
 			.then(res => setContacts(res.data))
 			.catch(err => console.error('Error fetching users:', err))
 		console.log(getUsername())
-	}, [])
+	}, [me])
 
 	useEffect(() => {
 		if (!active) return

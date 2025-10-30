@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>214/214</span>
+                <span class='fraction'>213/213</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>214/214</span>
+                <span class='fraction'>213/213</span>
             </div>
         
             
@@ -318,14 +318,36 @@
 <a name='L253'></a><a href='#L253'>253</a>
 <a name='L254'></a><a href='#L254'>254</a>
 <a name='L255'></a><a href='#L255'>255</a>
-<a name='L256'></a><a href='#L256'>256</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L256'></a><a href='#L256'>256</a>
+<a name='L257'></a><a href='#L257'>257</a>
+<a name='L258'></a><a href='#L258'>258</a>
+<a name='L259'></a><a href='#L259'>259</a>
+<a name='L260'></a><a href='#L260'>260</a>
+<a name='L261'></a><a href='#L261'>261</a>
+<a name='L262'></a><a href='#L262'>262</a>
+<a name='L263'></a><a href='#L263'>263</a>
+<a name='L264'></a><a href='#L264'>264</a>
+<a name='L265'></a><a href='#L265'>265</a>
+<a name='L266'></a><a href='#L266'>266</a>
+<a name='L267'></a><a href='#L267'>267</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">59x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">59x</span>
 <span class="cline-any cline-yes">59x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -575,23 +597,34 @@
 <span class="cline-any cline-yes">59x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useState } from 'react'
 import api from '../../lib/api'
-import { useAuth } from '../../store/useAuth'
 import './RequestInterface.css'
-import { getUsername } from '@store/userStore'
-import { setgroups } from 'process'
+&nbsp;
+interface Transaction {
+	id: number;
+	hash: string;
+	previous_hash: string;
+	timestamp: string;
+	messages: Message[];
+}
+&nbsp;
+interface Message {
+	is_p2p: boolean;
+	message_id: string;
+	message: string;
+	message_hash: string;
+}
 &nbsp;
 export default function RequestInterface() {
-	const me = useAuth(state =&gt; state.accessToken)!
 	const [activeTab, setActiveTab] = useState&lt;'transactions-verify' | 'transactions' | 'hash-group' | 'hash-p2p'&gt;('transactions-verify')
 &nbsp;
-	const [transactions, setTransactions] = useState&lt;any[]&gt;([])
+	const [transactions, setTransactions] = useState&lt;Transaction[]&gt;([])
 	const [transactions_verified, setTransactionsVerified] = useState&lt;string&gt;('')
 	const [group_verified, setGroupVerified] = useState&lt;string&gt;('')
 	const [p2p_verified, setP2PVerified] = useState&lt;string&gt;('')
 &nbsp;
 	const [users, setUsers] = useState&lt;string[]&gt;([])
 	const [groups, setGroups] = useState&lt;string[]&gt;([])
-	
+&nbsp;
 	const [selected_user1, setSelectedUser1] = useState('')
 	const [selected_user2, setSelectedUser2] = useState('')
 	const [selected_group, setSelectedGroup] = useState('')
@@ -600,7 +633,7 @@ export default function RequestInterface() {
 		if (activeTab === 'transactions-verify') {
 			api.get(`/verify-transactions`)
 				.then(res =&gt; {
-					const [isValid, message] = res.data
+					const [, message] = res.data
 					setTransactionsVerified(message)
 				})
 				.catch(err =&gt; console.error('Error fetching transactions:', err))
@@ -649,7 +682,7 @@ export default function RequestInterface() {
 						&lt;div className="mt-4"&gt;
 							&lt;h3 className="font-semibold text-lg mb-2" style={{ marginBottom: 10 }}&gt;Messages&lt;/h3&gt;
 							&lt;div className="flex flex-col space-y-4 border-l-2 pl-4"&gt;
-								{tx.messages.map((msg: any, index: number) =&gt; (
+								{tx.messages.map((msg: Message, index: number) =&gt; (
 									&lt;div key={index} className="bg-gray-50 p-3 rounded-md shadow-sm"&gt;
 										&lt;p style={{ marginBottom: 5 }}&gt;&lt;strong&gt;&amp;emsp;P2P:&lt;/strong&gt; &lt;pre&gt;	{msg.is_p2p ? 'Yes' : 'No'}&lt;/pre&gt;&lt;/p&gt;
 										&lt;p style={{ marginBottom: 5 }}&gt;&lt;strong&gt;&amp;emsp;Message ID:&lt;/strong&gt; &lt;pre&gt;	{msg.message_id}&lt;/pre&gt;&lt;/p&gt;
@@ -668,7 +701,7 @@ export default function RequestInterface() {
 	const handleSubmitGroup = async () =&gt; {
 		api.get(`/group-messages/${selected_group}/verify-hash`)
 			.then(res =&gt; {
-				const [isValid, message] = res.data
+				const [, message] = res.data
 				setGroupVerified(message)
 			})
 			.catch(err =&gt; console.error('Error fetching transactions:', err))
@@ -719,7 +752,7 @@ export default function RequestInterface() {
 	const handleSubmitP2P = async () =&gt; {
 		api.get(`/messages/${selected_user1}/${selected_user2}/verify-hash`)
 			.then(res =&gt; {
-				const [isValid, message] = res.data
+				const [, message] = res.data
 				setP2PVerified(message)
 			})
 			.catch(err =&gt; console.error('Error fetching transactions:', err))
@@ -835,7 +868,7 @@ export default function RequestInterface() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-30T19:33:29.121Z
+                at 2025-10-30T19:47:50.525Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

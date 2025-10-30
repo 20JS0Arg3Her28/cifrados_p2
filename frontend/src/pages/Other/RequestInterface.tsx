@@ -1,22 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import api from '../../lib/api'
-import { useAuth } from '../../store/useAuth'
 import './RequestInterface.css'
-import { getUsername } from '@store/userStore'
-import { setgroups } from 'process'
+
+interface Transaction {
+	id: number;
+	hash: string;
+	previous_hash: string;
+	timestamp: string;
+	messages: Message[];
+}
+
+interface Message {
+	is_p2p: boolean;
+	message_id: string;
+	message: string;
+	message_hash: string;
+}
 
 export default function RequestInterface() {
-	const me = useAuth(state => state.accessToken)!
 	const [activeTab, setActiveTab] = useState<'transactions-verify' | 'transactions' | 'hash-group' | 'hash-p2p'>('transactions-verify')
 
-	const [transactions, setTransactions] = useState<any[]>([])
+	const [transactions, setTransactions] = useState<Transaction[]>([])
 	const [transactions_verified, setTransactionsVerified] = useState<string>('')
 	const [group_verified, setGroupVerified] = useState<string>('')
 	const [p2p_verified, setP2PVerified] = useState<string>('')
 
 	const [users, setUsers] = useState<string[]>([])
 	const [groups, setGroups] = useState<string[]>([])
-	
+
 	const [selected_user1, setSelectedUser1] = useState('')
 	const [selected_user2, setSelectedUser2] = useState('')
 	const [selected_group, setSelectedGroup] = useState('')
@@ -25,7 +36,7 @@ export default function RequestInterface() {
 		if (activeTab === 'transactions-verify') {
 			api.get(`/verify-transactions`)
 				.then(res => {
-					const [isValid, message] = res.data
+					const [, message] = res.data
 					setTransactionsVerified(message)
 				})
 				.catch(err => console.error('Error fetching transactions:', err))
@@ -74,7 +85,7 @@ export default function RequestInterface() {
 						<div className="mt-4">
 							<h3 className="font-semibold text-lg mb-2" style={{ marginBottom: 10 }}>Messages</h3>
 							<div className="flex flex-col space-y-4 border-l-2 pl-4">
-								{tx.messages.map((msg: any, index: number) => (
+								{tx.messages.map((msg: Message, index: number) => (
 									<div key={index} className="bg-gray-50 p-3 rounded-md shadow-sm">
 										<p style={{ marginBottom: 5 }}><strong>&emsp;P2P:</strong> <pre>	{msg.is_p2p ? 'Yes' : 'No'}</pre></p>
 										<p style={{ marginBottom: 5 }}><strong>&emsp;Message ID:</strong> <pre>	{msg.message_id}</pre></p>
@@ -93,7 +104,7 @@ export default function RequestInterface() {
 	const handleSubmitGroup = async () => {
 		api.get(`/group-messages/${selected_group}/verify-hash`)
 			.then(res => {
-				const [isValid, message] = res.data
+				const [, message] = res.data
 				setGroupVerified(message)
 			})
 			.catch(err => console.error('Error fetching transactions:', err))
@@ -144,7 +155,7 @@ export default function RequestInterface() {
 	const handleSubmitP2P = async () => {
 		api.get(`/messages/${selected_user1}/${selected_user2}/verify-hash`)
 			.then(res => {
-				const [isValid, message] = res.data
+				const [, message] = res.data
 				setP2PVerified(message)
 			})
 			.catch(err => console.error('Error fetching transactions:', err))

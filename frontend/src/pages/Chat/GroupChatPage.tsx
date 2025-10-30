@@ -77,15 +77,15 @@ export default function GroupChatPage() {
 			headers: { Authorization: `Bearer ${me}` }
 		}).then(res => setContacts(res.data))
 			.catch(err => console.error('Error fetching groups:', err))
-	}, [])
+	}, [me])
 
 	useEffect(() => {
 		if (!active) return
 		api.get(`/group-messages/${active}/owner`, {
 			headers: { Authorization: `Bearer ${me}` }
-		}).then(res => setIsOwner(true))
+		}).then(() => setIsOwner(true))
 			.catch(err => console.log('Validating ownership:', err.response.data.detail))
-	}, [active, iamowner])
+	}, [active, iamowner, me])
 
 	useEffect(() => {
 		if (!active) return
@@ -93,7 +93,7 @@ export default function GroupChatPage() {
 			headers: { Authorization: `Bearer ${me}` }
 		}).then(res => setAvailableUsers(res.data))
 			.catch(err => console.log('Fetching users:', err.response.data.detail))
-	}, [active])
+	}, [active, me])
 
 	useEffect(() => {
 		if (!active) return
@@ -101,7 +101,7 @@ export default function GroupChatPage() {
 			headers: { Authorization: `Bearer ${me}` }
 		}).then(res => setMessages(res.data))
 			.catch(err => console.error('Error fetching messages:', err))
-	}, [active, me])
+	}, [active, me, setMessages])
 
 	const send = async (text: string) => {
 		try {

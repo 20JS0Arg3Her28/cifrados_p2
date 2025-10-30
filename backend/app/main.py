@@ -1,35 +1,24 @@
+import os
+from dotenv import load_dotenv
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.sessions import SessionMiddleware
+from starlette.requests import Request
+from starlette.responses import Response
 
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
 from app.utils.limiter import limiter
-
-import os
-
-from app.routers import auth
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.requests import Request
-from starlette.responses import Response
-import os
-
-from app.routers import auth
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.requests import Request
-from starlette.responses import Response
-import os
-
 from app.routers import auth
 from app.middleware.logger import RequestLoggerMiddleware
 from app.auth.google.routes import router as google_login_router
 from app.auth.google.callback import router as google_callback_router
 from app.endpoints.chat import router as chat_router
 from app.endpoints.chain import router as chain_router
-
-from dotenv import load_dotenv
 
 load_dotenv()
 
