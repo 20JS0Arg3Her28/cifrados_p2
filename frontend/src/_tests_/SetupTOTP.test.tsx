@@ -115,4 +115,5 @@ describe('SetupTOTP', () => {
     expect(container.querySelector('code')).toBeInTheDocument();
     expect(container.querySelector('button')).toBeInTheDocument();
   });
+
 });

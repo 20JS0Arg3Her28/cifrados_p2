@@ -58,7 +58,19 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'],
-      reportsDirectory: 'coverage'
+      reportsDirectory: 'coverage',
+      exclude: [
+        'node_modules/**',
+        'src/_tests_/**',
+        'dist/**',
+        '**/*.config.{ts,js}',
+        '**/setupTests.ts',
+        'src/main.tsx',        // Entry point - no se puede testear directamente
+        'src/types.ts',        // Solo definiciones de tipos TypeScript
+        'src/vite-env.d.ts'    // Archivo de tipos de Vite
+      ],
+      all: true,
+      include: ['src/**/*.{ts,tsx}']
     }
   },
   /**

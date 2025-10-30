@@ -27,7 +27,36 @@ def test_get_current_user_invalid_token():
 
     # Should raise HTTPException with 401 status
     with pytest.raises(HTTPException) as exc_info:
-        get_current_user(token=invalid_token)
+        result = get_current_user(token=invalid_token)
+
+    assert exc_info.value.status_code == 401
+    assert exc_info.value.detail == "Invalid token"
+
+
+def test_get_current_user_expired_token():
+    """Test get_current_user with an expired token."""
+    from datetime import timedelta
+    # Create an expired token (negative timedelta)
+    expired_token = create_token(
+        data={"sub": "testuser"},
+        expires_delta=timedelta(seconds=-60),  # Already expired
+        token_type="access"
+    )
+
+    # Should raise HTTPException because token is expired
+    with pytest.raises(HTTPException) as exc_info:
+        result = get_current_user(token=expired_token)
+
+    assert exc_info.value.status_code == 401
+    assert exc_info.value.detail == "Invalid token"
+
+
+def test_get_current_user_malformed_token():
+    """Test get_current_user with a malformed token."""
+    malformed_token = "not.a.valid.jwt"
+
+    with pytest.raises(HTTPException) as exc_info:
+        result = get_current_user(token=malformed_token)
 
     assert exc_info.value.status_code == 401
     assert exc_info.value.detail == "Invalid token"
