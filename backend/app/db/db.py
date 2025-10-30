@@ -1,4 +1,4 @@
-from sqlalchemy import *
+import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
@@ -6,8 +6,6 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.engine.url import make_url
 from dotenv import load_dotenv
 import os
-
-# from app.model.models import User
 
 # Cargar variables de entorno
 load_dotenv()
@@ -24,18 +22,18 @@ def create_database_if_not_exists():
 	url = url.set(database="postgres")
 
 	# Create engine for the 'postgres' database
-	engine = create_engine(url, isolation_level="AUTOCOMMIT")
+	engine = sqlalchemy.create_engine(url, isolation_level="AUTOCOMMIT")
 
 	with engine.connect() as conn:
 		# Check if the target database exists
 		result = conn.execute(
-			text("SELECT 1 FROM pg_database WHERE datname = :name"), {"name": target_db}
+			sqlalchemy.text("SELECT 1 FROM pg_database WHERE datname = :name"), {"name": target_db}
 		)
 		exists = result.scalar() is not None
 
 		if not exists:
 			conn.execute(
-				text(f'CREATE DATABASE "{target_db}"')
+				sqlalchemy.text(f'CREATE DATABASE "{target_db}"')
 			)  # Double quotes preserve case sensitivity
 
 	engine.dispose()
@@ -43,7 +41,7 @@ def create_database_if_not_exists():
 # Crear engine con manejo de excepciones
 def create_engine_with_error_handling():
 	try:
-		return create_engine(
+		return sqlalchemy.create_engine(
 			DATABASE_URL,
 			pool_size=10,
 			max_overflow=20,
@@ -73,7 +71,7 @@ def create_tables():
 def check_connection(engine):
 	try:
 		with engine.connect() as connection:
-			connection.execute(text("SELECT 1"))  # <- Aquí el cambio
+			connection.execute(sqlalchemy.text("SELECT 1"))  # <- Aquí el cambio
 		print("Conexión a la base de datos exitosa.")
 	except SQLAlchemyError as e:
 		print(f"Error al conectar a la base de datos: {e}")

@@ -1,16 +1,13 @@
 from fastapi import APIRouter, Depends, Request
 from dotenv import load_dotenv
-from typing import *
+from typing import List
 import json
 import hashlib
 
-from app.auth.dependencies import get_current_user
-from app.schemas.schemas import *
-
 from sqlalchemy.orm import Session
-from fastapi import Depends, HTTPException
+from fastapi import Depends
 from app.db.db import get_db
-from app.model.models import *
+from app.model.models import Block, BlockMessage, PeerMessage,GroupMessage
 
 from app.utils.limiter import limiter
 
@@ -47,7 +44,7 @@ class BlockchainManager:
 
 	def add_message(self, is_p2p, message_id):
 		if is_p2p:
-			db_message = self.db.query(P2P_Message).filter(P2P_Message.id == message_id).first()
+			db_message = self.db.query(PeerMessage).filter(PeerMessage.id == message_id).first()
 		else:
 			db_message = self.db.query(GroupMessage).filter(GroupMessage.id == message_id).first()
 

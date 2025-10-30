@@ -57,7 +57,7 @@ export const useAuth = create<AuthState>((set) => ({
 
   /**
    * Elimina los tokens del estado y del localStorage (cierre de sesión).
-   * También limpia todo el localStorage para reset completo.
+   * También limpia el localStorage para reset completo.
    */
   logout: () => {
     localStorage.removeItem("accessToken")

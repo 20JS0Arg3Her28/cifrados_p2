@@ -16,5 +16,9 @@
  * validateEmail("sin-arroba.com");      // false
  * ```
  */
-export const validateEmail = (email: string): boolean =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+import validator from "validator";
+
+export const validateEmail = (email: string): boolean => {
+  // validator.isEmail performs deterministic checks and length validation
+  return validator.isEmail(email, { allow_utf8_local_part: false });
+};

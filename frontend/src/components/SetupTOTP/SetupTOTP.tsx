@@ -22,10 +22,7 @@ export default function SetupTOTP() {
           alt="TOTP QR Code"
           className={styles.qr}
         />
-        <p>
-          O copia este código manualmente:
-          <code className={styles.code}>{state.secret}</code>
-        </p>
+        <p>O copia este código manualmente: <code className={styles.code}>{state.secret}</code></p>
         <button onClick={() => navigate("/login")} className={styles.button}>
           Ir al login
         </button>

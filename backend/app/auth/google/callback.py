@@ -9,7 +9,7 @@ import logging
 
 import pyotp
 
-from app.crypto.crypto import *
+import app.crypto.crypto
 
 router = APIRouter(prefix="/auth", tags=["google"])
 logger = logging.getLogger(__name__)
@@ -59,21 +59,21 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
 			logger.info(f"Creating new Google user: {email}")
 			totp_secret = pyotp.random_base32()
 
-			private_key, public_key = generate_rsa_keys()
-			private_key_encrypted = encrypt_bytes(private_key)
+			private_key, public_key = app.crypto.crypto.generate_rsa_keys()
+			private_key_encrypted = app.crypto.crypto.encrypt_bytes(private_key)
 
-			private_ecc_key, public_ecc_key = generate_ecc_keys()
-			private_ecc_key_encrypted = encrypt_bytes(private_ecc_key)
+			private_ecc_key, public_ecc_key = app.crypto.crypto.generate_ecc_keys()
+			private_ecc_key_encrypted = app.crypto.crypto.encrypt_bytes(private_ecc_key)
 
 			user = User(
 				email=email,
 				hashed_password="",
 				totp_secret=totp_secret,
 				is_google_account=True,
-				public_key=bytes_to_str(public_key),
-				private_key=bytes_to_str(private_key_encrypted),
-				public_ecc_key=bytes_to_str(public_ecc_key),
-				private_ecc_key=bytes_to_str(private_ecc_key_encrypted)
+				public_key=app.crypto.crypto.bytes_to_str(public_key),
+				private_key=app.crypto.crypto.bytes_to_str(private_key_encrypted),
+				public_ecc_key=app.crypto.crypto.bytes_to_str(public_ecc_key),
+				private_ecc_key=app.crypto.crypto.bytes_to_str(private_ecc_key_encrypted)
 			)
 			db.add(user)
 			db.commit()

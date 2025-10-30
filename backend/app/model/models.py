@@ -1,15 +1,15 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import *
+from sqlalchemy import Column, Text, String, Boolean, Integer, ForeignKey, DateTime, or_, and_
 from app.db.db import Base
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy.orm import relationship
 
-from app.schemas.schemas import *
+from app.schemas.schemas import BaseModel
 from typing import Optional
 
-from app.crypto.crypto import *
-from app.crypto.signing import *
-from app.crypto.hashing import *
+from app.crypto.crypto import cifrar_mensaje_grupal, cifrar_mensaje_individual, decrypt_bytes, descifrar_mensaje_grupal, descifrar_mensaje_individual, get_random_bytes
+from app.crypto.signing import str_to_bytes, bytes_to_str, sign_data_ecdsa, verify_signature_ecdsa
+from app.crypto.hashing import generate_hash
 
 class User(Base):
 	__tablename__ = "users"
@@ -31,7 +31,7 @@ class User(Base):
 	email_verified = Column(Boolean, default=False)
 	totp_verified = Column(Boolean, default=False)
 
-class P2P_Message(Base):
+class PeerMessage(Base):
 	__tablename__ = "p2p_messages"
 
 	id = Column(Integer, primary_key=True, index=True)
@@ -149,9 +149,9 @@ def send_p2p_message(db: Session, sender_id: int, receiver_id: int, payload: Mes
 		private_ecc_key = decrypt_bytes(private_ecc_key_encrypted)
 		signature = sign_data_ecdsa(encrypted_message, private_ecc_key)
 
-	timestamp = datetime.utcnow()
+	timestamp = datetime.now(timezone.utc)
 
-	msg = P2P_Message(
+	msg = PeerMessage(
 		sender_id=sender_id,
 		receiver_id=receiver_id,
 		message=encrypted_message,
@@ -168,12 +168,12 @@ def get_p2p_messages_by_user(db: Session, user1_id: int, user2_id: int):
 	user1_db = get_user_by_id(db, user1_id)
 	user2_db = get_user_by_id(db, user2_id)
 
-	data = db.query(P2P_Message).filter(
+	data = db.query(PeerMessage).filter(
 		or_(
-			and_(P2P_Message.sender_id == user1_id, P2P_Message.receiver_id == user2_id),
-			and_(P2P_Message.sender_id == user2_id, P2P_Message.receiver_id == user1_id)
+			and_(PeerMessage.sender_id == user1_id, PeerMessage.receiver_id == user2_id),
+			and_(PeerMessage.sender_id == user2_id, PeerMessage.receiver_id == user1_id)
 		)
-	).order_by(P2P_Message.timestamp.desc()).all()
+	).order_by(PeerMessage.timestamp.desc()).all()
 
 	messages = []
 	for msg in data:
@@ -225,7 +225,7 @@ def send_group_message(db: Session, sender_id: int, group_name: str, payload: Me
 		private_ecc_key = decrypt_bytes(private_ecc_key_encrypted)
 		signature = sign_data_ecdsa(encrypted_message, private_ecc_key)
 
-	timestamp = datetime.utcnow()
+	timestamp = datetime.now(timezone.utc)
 
 	group_message = GroupMessage(
 		sender_id=sender_id,

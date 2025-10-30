@@ -103,7 +103,25 @@ export default function Signup(): JSX.Element {
         <h2 className={styles.title}>Registro</h2>
 
         {/* Formulario antes de registrarse */}
-        {!registered ? (
+        {registered ? (
+          // Vista después de registrarse: muestra QR y secreto TOTP
+          <div className={styles.result}>
+            <p className={styles.success}>Registro exitoso</p>
+            <p>Escanea este código QR en tu app de autenticación:</p>
+            <img
+              src={`data:image/png;base64,${qrCode}`}
+              alt="TOTP QR Code"
+              className={styles.qr}
+            />
+            <p>O copia este código: <code className={styles.code}>{totpSecret}</code></p>
+            <button
+              onClick={() => navigate("/login")}
+              className={styles.buttonAlt}
+            >
+              Ir al login
+            </button>
+          </div>
+        ) : (
           <div className={styles.form}>
             <input
               placeholder="Correo electrónico"
@@ -126,27 +144,6 @@ export default function Signup(): JSX.Element {
               className={`${styles.button} ${styles.googleButton}`}
             >
               Registrarse con Google
-            </button>
-          </div>
-        ) : (
-          // Vista después de registrarse: muestra QR y secreto TOTP
-          <div className={styles.result}>
-            <p className={styles.success}>Registro exitoso</p>
-            <p>Escanea este código QR en tu app de autenticación:</p>
-            <img
-              src={`data:image/png;base64,${qrCode}`}
-              alt="TOTP QR Code"
-              className={styles.qr}
-            />
-            <p>
-              O copia este código:
-              <code className={styles.code}>{totpSecret}</code>
-            </p>
-            <button
-              onClick={() => navigate("/login")}
-              className={styles.buttonAlt}
-            >
-              Ir al login
             </button>
           </div>
         )}

@@ -15,11 +15,13 @@ import io
 import base64
 import logging
 
-from app.crypto.crypto import *
+from app.crypto.crypto import bytes_to_str, generate_rsa_keys, encrypt_bytes, generate_ecc_keys
 from app.utils.limiter import limiter
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 logger = logging.getLogger(__name__)
+
+INVALID_CREDENTIALS = HTTPException(status_code=401, detail="Credenciales no válidas")
 
 @router.post("/signup", response_model=SignupResponse)
 @limiter.limit("1/30seconds")
@@ -99,17 +101,17 @@ def signin(request: Request, login_data: UserLogin, db: Session = Depends(get_db
 	# Email no existe
 	if not user:
 		logger.warning(f"Login attempt for non-existent user: {login_data.email}")
-		raise HTTPException(status_code=401, detail="Credenciales no válidas")
+		raise INVALID_CREDENTIALS
 	
 	# Password incorrecta
 	if not verify_password(login_data.password, user.hashed_password):
 		logger.warning(f"Invalid password for user: {login_data.email}")
-		raise HTTPException(status_code=401, detail="Credenciales no válidas")
+		raise INVALID_CREDENTIALS
 
 	# TOTP incorrecto
 	if not verify_totp_token(user.totp_secret, login_data.totp_code):
 		logger.warning(f"Invalid TOTP for user: {login_data.email}")
-		raise HTTPException(status_code=401, detail="Credenciales no válidas")
+		raise INVALID_CREDENTIALS
 
 	# Login exitoso
 	logger.info(f"Successful login: {user.email}")

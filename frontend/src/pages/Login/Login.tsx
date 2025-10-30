@@ -1,11 +1,10 @@
 import React, { JSX, useEffect, useState } from "react";
-import { signin } from "@api/api";
+import { signin, googleLoginUrl } from "@api/api";
 import { useAuth } from "@store/useAuth";
 import { validateEmail } from "@constants/validatros";
 import { useNavigate } from "react-router-dom";
 import Toast from "@components/Toast/Toast";
 import styles from "./Login.module.css";
-import { googleLoginUrl } from "@api/api";
 import { loadUsername } from "@store/userStore";
 import { devLog, devError } from "@api/logger";
 
