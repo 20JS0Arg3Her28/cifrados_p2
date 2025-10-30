@@ -42,33 +42,22 @@ def verify_signature(data: str, signature_b64: str, public_key_pem: bytes) -> bo
         return False
 
 # 🖊️ Firmar datos usando ECDSA (curvas elípticas)
-# Esta versión espera la clave en bytes (formato DER)
-def sign_data_ecdsa(data: str, private_key_pem: bytes) -> str:
-    private_key_pem = str_to_bytes(private_key_pem)
+# Esta versión maneja tanto bytes como str para la clave
+def sign_data_ecdsa(data: str, private_key_pem) -> str:
+    # Convertir a bytes si es necesario (soporta tanto str como bytes)
+    if isinstance(private_key_pem, bytes):
+        private_key_pem = str_to_bytes(private_key_pem)
+
     private_key = ECC.import_key(private_key_pem)
-    
+
     # Se usa el mismo hash que RSA: SHA-256
-    hash_obj = SHA256.new(str_to_bytes(data))
-    
+    # El data es texto plano, se codifica a UTF-8, no es base64
+    hash_obj = SHA256.new(data.encode('utf-8'))
+
     # Crea el firmador según el estándar FIPS 186-3
     signer = DSS.new(private_key, 'fips-186-3')
-    
-    # Firma el hash y lo retorna en base64
-    signature = signer.sign(hash_obj)
-    return bytes_to_str(signature)
 
-# 🖊️ Otra versión para firmar datos con ECDSA (clave en string PEM)
-def sign_data_ecdsa(data: str, private_key_pem: str) -> str:
-    # Importa clave ECC (curva elíptica)
-    private_key = ECC.import_key(private_key_pem)
-    
-    # Crea hash del mensaje
-    hash_obj = SHA256.new(data.encode('utf-8'))
-    
-    # Usa DSS con estándar FIPS
-    signer = DSS.new(private_key, 'fips-186-3')
-    
-    # Firma el mensaje y retorna como base64
+    # Firma el hash y lo retorna en base64
     signature = signer.sign(hash_obj)
     return bytes_to_str(signature)
 
