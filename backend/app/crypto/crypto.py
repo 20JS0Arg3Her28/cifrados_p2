@@ -51,8 +51,8 @@ def cifrar_mensaje_individual(mensaje: str, clave_publica_rsa_pem: bytes) -> str
 	clave_aes = get_random_bytes(32)
 	iv = get_random_bytes(16)
 
-	# Cifra mensaje con AES-256-CBC
-	cipher_aes = AES.new(clave_aes, AES.MODE_CBC, iv)
+	# Cifra mensaje con AES-256-GCM
+	cipher_aes = AES.new(clave_aes, AES.MODE_GCM, iv)
 	padding_len = 16 - len(mensaje.encode()) % 16
 	mensaje_padded = mensaje + chr(padding_len) * padding_len
 	mensaje_cifrado = cipher_aes.encrypt(mensaje_padded.encode())
@@ -82,7 +82,7 @@ def descifrar_mensaje_individual(data_str: str, clave_privada_rsa_pem: bytes) ->
 		clave_aes = cipher_rsa.decrypt(clave_aes_cifrada)
 
 		# Descifra mensaje
-		cipher_aes = AES.new(clave_aes, AES.MODE_CBC, iv)
+		cipher_aes = AES.new(clave_aes, AES.MODE_GCM, iv)
 		mensaje_padded = cipher_aes.decrypt(mensaje_cifrado)
 		padding_len = mensaje_padded[-1]
 		return mensaje_padded[:-padding_len].decode()
