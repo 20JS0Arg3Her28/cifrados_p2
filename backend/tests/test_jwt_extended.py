@@ -1,13 +1,8 @@
-import pytest
-from unittest.mock import patch, Mock
 from datetime import datetime, timedelta, timezone
-from jose import JWTError
-import os
-
 
 def test_jwt_token_with_wrong_issuer():
     """Test token with incorrect issuer"""
-    from app.auth.jwt import create_access_token, decode_token, ISSUER
+    from app.auth.jwt import create_access_token, decode_token
 
     # Create token with standard issuer
     token = create_access_token({"sub": "test@example.com"}, scope="user")
@@ -217,12 +212,8 @@ def test_jwt_token_no_jti():
 
 def test_jwt_token_payload_immutability():
     """Test that original data dict is not mutated during token creation"""
-    from app.auth.jwt import create_access_token
-
     original_data = {"sub": "test@example.com", "custom": "value"}
     original_keys = set(original_data.keys())
-
-    token = create_access_token(original_data, scope="user")
 
     # Original data should not be modified
     assert set(original_data.keys()) == original_keys

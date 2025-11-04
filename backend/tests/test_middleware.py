@@ -1,7 +1,7 @@
 import pytest
 from fastapi import FastAPI, HTTPException
 from fastapi.testclient import TestClient
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 from app.middleware.logger import RequestLoggerMiddleware
 
 

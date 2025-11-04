@@ -1,6 +1,5 @@
 from app.crypto.signing import sign_data, verify_signature, sign_data_ecdsa, verify_signature_ecdsa
 from Crypto.PublicKey import RSA, ECC
-import base64
 
 
 def test_rsa_sign_and_verify():

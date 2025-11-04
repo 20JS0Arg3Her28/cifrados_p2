@@ -46,7 +46,7 @@ def test_security_headers_and_csp():
 
 def test_security_headers_removes_server_header():
     """Test that SecurityHeadersMiddleware removes the 'server' header if present."""
-    from unittest.mock import AsyncMock, MagicMock
+    from unittest.mock import MagicMock
     from app.main import SecurityHeadersMiddleware
     from starlette.requests import Request
     from starlette.responses import JSONResponse

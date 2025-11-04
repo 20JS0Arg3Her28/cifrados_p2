@@ -1,4 +1,3 @@
-import pytest
 from app.crypto.signing import (
     sign_data,
     verify_signature,
@@ -6,7 +5,6 @@ from app.crypto.signing import (
     verify_signature_ecdsa
 )
 from app.crypto.crypto import generate_rsa_keys, generate_ecc_keys, str_to_bytes, bytes_to_str
-from Crypto.PublicKey import RSA, ECC
 import base64
 
 
